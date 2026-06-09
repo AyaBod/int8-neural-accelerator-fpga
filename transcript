@@ -1,0 +1,14 @@
+# ** Note: (vsim-220) 'C:/altera_lite/25.1std/questa_fse/win64/../modelsim.ini' is used as the ini file.
+# vsim -c dot_product_tb -do "run -all; quit" 
+# Start time: 23:01:50 on Jun 08,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-220) 'C:/altera_lite/25.1std/questa_fse/win64/../modelsim.ini' is used as the ini file.
+# ** Warning: src/dot_product.sv(7): (vopt-13314) Defaulting port 'a' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Warning: src/dot_product.sv(8): (vopt-13314) Defaulting port 'b' kind to 'var' rather than 'wire' due to default compile option setting of -svinputport=relaxed.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=2.
+# ** License Issue: License request for intelqsimstarter feature failed
+# ** License Issue: Feature start date is in the future. ("C:\altera_lite\LR-170648_License.dat")
+# ** Error: Failure to obtain a Verilog simulation license. Unable to checkout 'intelqsimstarter' license.
+# Error loading design
+# End time: 23:01:53 on Jun 08,2026, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 2

@@ -1,0 +1,79 @@
+m255
+K4
+z2
+!s12c _opt
+Z0 !s99 nomlopt
+!s11f MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dC:/Users/ayann/Documents/int8-neural-accelerator-fpga
+T_opt
+!i145 1
+!i144 0
+!s110 1780974112
+VbE2?[;6N^^RC<V>41:knO2
+04 14 4 work dot_product_tb fast 0
+=1-28952997b2e7-6a27821f-fc-81b0
+R0
+!s12f OEM100
+!s12b OEM100
+!s124 OEM10U2 
+!s135 nogc
+o-quiet -auto_acc_if_foreign -work work
+tCvgOpt 0 defaultOptions 1107585188
+n@_opt
+OL;O;2025.2;82
+vdot_product
+Z2 2src/dot_product.sv|tb/dot_product_tb.sv
+Z3 DXx6 sv_std 3 std 0 22 @5XbY]_OacJl=`ToSm<M^0
+Z4 !s110 1780974105
+!i10b 1
+!s100 jQPkDAXl3R39K8;1?0k0]0
+I1fH=JGW:`]]h2YD41?e?33
+S1
+R1
+w1780973736
+8src/dot_product.sv
+Fsrc/dot_product.sv
+!i122 2
+L0 1 40
+Z5 VDg1SIo80bB@j0V0VzS_@n1
+Z6 OL;L;2025.2;82
+r1
+!s85 0
+31
+Z7 !s108 1780974105.000000
+Z8 !s107 tb/dot_product_tb.sv|src/dot_product.sv|
+Z9 !s90 -sv|src/dot_product.sv|tb/dot_product_tb.sv|
+!i113 0
+Z10 o-sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z11 tCvgOpt 0 defaultOptions 1085333592
+vdot_product_tb
+R2
+R3
+R4
+!i10b 1
+!s100 Dn?D3?S7hPbYNC4A;[P^W2
+IP_7KfMCYZCdN@Q3BJFnUL1
+S1
+R1
+w1780974100
+8tb/dot_product_tb.sv
+Ftb/dot_product_tb.sv
+!i122 2
+L0 1 75
+R5
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R11

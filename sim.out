@@ -1,0 +1,94 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\va_math.vpi";
+:vpi_module "C:\Users\ayann\DOCUME~1\iverilog\lib\ivl\v2009.vpi";
+S_0000012de39a8320 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0000012de39b6130 .scope module, "adder_tb" "adder_tb" 3 1;
+ .timescale 0 0;
+v0000012de3a004f0_0 .var "a", 7 0;
+v0000012de3a00590_0 .var "b", 7 0;
+v0000012de3a00630_0 .net "sum", 8 0, L_0000012de39b3be0;  1 drivers
+S_0000012de39b62c0 .scope task, "check_adder" "check_adder" 3 17, 3 17 0, S_0000012de39b6130;
+ .timescale 0 0;
+v0000012de3983290_0 .var "expected", 8 0;
+v0000012de3abaf30_0 .var "t_a", 7 0;
+v0000012de3abac10_0 .var "t_b", 7 0;
+TD_adder_tb.check_adder ;
+    %load/vec4 v0000012de3abaf30_0;
+    %store/vec4 v0000012de3a004f0_0, 0, 8;
+    %load/vec4 v0000012de3abac10_0;
+    %store/vec4 v0000012de3a00590_0, 0, 8;
+    %delay 10, 0;
+    %load/vec4 v0000012de3a00630_0;
+    %load/vec4 v0000012de3983290_0;
+    %cmp/e;
+    %jmp/0xz  T_0.0, 4;
+    %vpi_call/w 3 23 "$display", "PASSED: %0d + %0d = %0d", v0000012de3abaf30_0, v0000012de3abac10_0, v0000012de3a00630_0 {0 0 0};
+    %jmp T_0.1;
+T_0.0 ;
+    %vpi_call/w 3 25 "$display", "FAILED: %0d + %0d | expected %0d, got %0d", v0000012de3abaf30_0, v0000012de3abac10_0, v0000012de3983290_0, v0000012de3a00630_0 {0 0 0};
+T_0.1 ;
+    %end;
+S_0000012de3a00040 .scope module, "uut" "adder" 3 9, 4 1 0, S_0000012de39b6130;
+ .timescale 0 0;
+    .port_info 0 /INPUT 8 "a";
+    .port_info 1 /INPUT 8 "b";
+    .port_info 2 /OUTPUT 9 "sum";
+v0000012de39b6450_0 .net *"_ivl_0", 8 0, L_0000012de3a006d0;  1 drivers
+L_0000012de3a00778 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0000012de39b64f0_0 .net *"_ivl_3", 0 0, L_0000012de3a00778;  1 drivers
+v0000012de3a001d0_0 .net *"_ivl_4", 8 0, L_0000012de39b3280;  1 drivers
+L_0000012de3a007c0 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0000012de3a00270_0 .net *"_ivl_7", 0 0, L_0000012de3a007c0;  1 drivers
+v0000012de3a00310_0 .net "a", 7 0, v0000012de3a004f0_0;  1 drivers
+v0000012de3a003b0_0 .net "b", 7 0, v0000012de3a00590_0;  1 drivers
+v0000012de3a00450_0 .net "sum", 8 0, L_0000012de39b3be0;  alias, 1 drivers
+L_0000012de3a006d0 .concat [ 8 1 0 0], v0000012de3a004f0_0, L_0000012de3a00778;
+L_0000012de39b3280 .concat [ 8 1 0 0], v0000012de3a00590_0, L_0000012de3a007c0;
+L_0000012de39b3be0 .arith/sum 9, L_0000012de3a006d0, L_0000012de39b3280;
+    .scope S_0000012de39b6130;
+T_1 ;
+    %vpi_call/w 3 32 "$dumpfile", "dump.vcd" {0 0 0};
+    %vpi_call/w 3 33 "$dumpvars", 32'sb00000000000000000000000000000000, S_0000012de39b6130 {0 0 0};
+    %pushi/vec4 10, 0, 8;
+    %store/vec4 v0000012de3abaf30_0, 0, 8;
+    %pushi/vec4 20, 0, 8;
+    %store/vec4 v0000012de3abac10_0, 0, 8;
+    %pushi/vec4 30, 0, 9;
+    %store/vec4 v0000012de3983290_0, 0, 9;
+    %fork TD_adder_tb.check_adder, S_0000012de39b62c0;
+    %join;
+    %pushi/vec4 255, 0, 8;
+    %store/vec4 v0000012de3abaf30_0, 0, 8;
+    %pushi/vec4 1, 0, 8;
+    %store/vec4 v0000012de3abac10_0, 0, 8;
+    %pushi/vec4 256, 0, 9;
+    %store/vec4 v0000012de3983290_0, 0, 9;
+    %fork TD_adder_tb.check_adder, S_0000012de39b62c0;
+    %join;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0000012de3abaf30_0, 0, 8;
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v0000012de3abac10_0, 0, 8;
+    %pushi/vec4 0, 0, 9;
+    %store/vec4 v0000012de3983290_0, 0, 9;
+    %fork TD_adder_tb.check_adder, S_0000012de39b62c0;
+    %join;
+    %vpi_call/w 3 40 "$display", "All tests done." {0 0 0};
+    %vpi_call/w 3 41 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "tb/adder_tb.sv";
+    "src/adder.sv";

@@ -1,0 +1,61 @@
+$date
+	Sun Jun 07 19:07:42 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module adder_tb $end
+$var wire 9 ! sum [8:0] $end
+$var reg 8 " a [7:0] $end
+$var reg 8 # b [7:0] $end
+$scope module uut $end
+$var wire 8 $ a [7:0] $end
+$var wire 8 % b [7:0] $end
+$var wire 9 & sum [8:0] $end
+$upscope $end
+$scope task check_adder $end
+$var reg 9 ' expected [8:0] $end
+$var reg 8 ( t_a [7:0] $end
+$var reg 8 ) t_b [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b10100 )
+b1010 (
+b11110 '
+b11110 &
+b10100 %
+b1010 $
+b10100 #
+b1010 "
+b11110 !
+$end
+#10
+b1 #
+b1 %
+b100000000 !
+b100000000 &
+b11111111 "
+b11111111 $
+b100000000 '
+b1 )
+b11111111 (
+#20
+b0 #
+b0 %
+b0 !
+b0 &
+b0 "
+b0 $
+b0 '
+b0 )
+b0 (
+#30
