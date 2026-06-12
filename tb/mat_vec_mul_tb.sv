@@ -32,7 +32,9 @@ module mat_vec_mul_tb;
     valid_in = 1;
     @(posedge clk); //wait one clock cycle 
     valid_in = 0;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
+    //clk 1 = stage 1 to stage 2
+    //clk 2 = stage 2 to output
         for (int r = 0; r < ROWS; r++) begin
             if (result[r] == expected[r])
                 $display("PASSED row %0d: result = %0d", r, result[r]);
@@ -45,7 +47,8 @@ module mat_vec_mul_tb;
         $dumpfile("dump.vcd");
         $dumpvars(0, mat_vec_mul_tb);
 
-        rst = 1; valid_in = 0;
+        rst = 1; 
+        valid_in = 0;
         repeat(2) @(posedge clk);
         rst = 0;
         @(posedge clk);
