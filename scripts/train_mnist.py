@@ -62,7 +62,7 @@ print(f"weight range after:  [{weights_int8.min()}, {weights_int8.max()}]")
 #run one output neuron row 0 in fpga hardware
 #row 0 is weights for digit class 0
 
-row = 0
+row = 2  #since test image is a "2"
 w_row = weights_int8[row, :4].view(np.int8)  #first 4 weights of row 0 for 4x4 hardware
 
 print(f"raw int8 values (signed): {w_row}") #quantized weights
