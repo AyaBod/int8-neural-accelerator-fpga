@@ -110,4 +110,4 @@ with open("docs/vector.mem", "w") as f:
 print("saved docs/vector.mem")
 
 expected_result = int(np.dot(w_row.astype(np.int32), sample_int8.astype(np.int32)))
-print(f"\nexpected dot product (row 0 · sample image): {expected_result}")
+print(f"Expected dot product (row {row} · sample image): {expected_result}")
