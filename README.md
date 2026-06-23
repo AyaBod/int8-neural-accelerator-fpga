@@ -87,13 +87,13 @@ python scripts/train_mnist.py
  
 ## Verification summary
  
-- `mat_vec_mul_tb.sv` — 24 passing tests: identity matrix, all-ones, negative weights, 3 randomized vectors cross-checked against NumPy, and INT8 boundary values (max positive, max negative, zero matrix)
-- `fsm_tb.sv` — full state transition trace (IDLE→PRELOAD→LOAD→COMPUTE→STORE→DONE×4) plus a SystemVerilog assertion (`disable iff (rst)`) that flags any illegal FSM state
-- `accelerator_top_tb.sv` — full system integration test; hardware output matches a real PyTorch-quantized MNIST classifier exactly
+- `mat_vec_mul_tb.sv` - 24 passing tests: identity matrix, all-ones, negative weights, 3 randomized vectors cross-checked against NumPy, and INT8 boundary values (max positive, max negative, zero matrix)
+- `fsm_tb.sv` - full state transition trace (IDLE→PRELOAD→LOAD→COMPUTE→STORE→DONE×4) plus a SystemVerilog assertion (`disable iff (rst)`) that flags any illegal FSM state
+- `accelerator_top_tb.sv` - full system integration test; hardware output matches a real PyTorch-quantized MNIST classifier exactly
 ## Known limitations / scope
  
-- 4×4 matrix size only — a real MNIST classifier needs 784 input features; this hardware demonstrates the math and pipeline on a representative slice, not full inference
-- Simulation only — not yet synthesized to the target Intel FPGA PAC N3000
+- 4×4 matrix size only - a real MNIST classifier needs 784 input features; this hardware demonstrates the math and pipeline on a representative slice, not full inference
+- Simulation only - not yet synthesized to the target Intel FPGA PAC N3000
 - Vector is re-read from BRAM on every row pass rather than cached, since it doesn't change between rows (a minor efficiency opportunity, not a correctness issue)
 ## Tools
  
