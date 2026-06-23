@@ -39,7 +39,7 @@ The hardware is scoped to a 4×4 matrix-vector multiply. To demonstrate a comple
  
 ### FSM state diagram
  
-![FSM State Diagram](docs\fsm_diagram_updated.png)
+![FSM State Diagram](docs/fsm_diagram_updated.png)
  
 States: `IDLE → PRELOAD → LOAD → COMPUTE → STORE → DONE`
  
