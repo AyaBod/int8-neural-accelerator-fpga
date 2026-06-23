@@ -43,19 +43,19 @@ The hardware is scoped to a 4×4 matrix-vector multiply. To demonstrate a comple
  
 States: `IDLE → PRELOAD → LOAD → COMPUTE → STORE → DONE`
  
-- **PRELOAD** — reads the full 4×4 weight matrix from BRAM into internal registers before computation starts
-- **LOAD / COMPUTE / STORE** — loops once per matrix row: loads the input vector, computes the dot product, writes the result
-- **DONE** — signals a complete inference pass; pulses back to IDLE
+- **PRELOAD** - reads the full 4×4 weight matrix from BRAM into internal registers before computation starts
+- **LOAD / COMPUTE / STORE** - loops once per matrix row: loads the input vector, computes the dot product, writes the result
+- **DONE** - signals a complete inference pass; pulses back to IDLE
 ## Performance (simulation)
  
 | Metric | Value |
 |---|---|
-| Pipeline stages | 2 (multiply → accumulate) |
+| Pipeline stages | 2 (multiply -> accumulate) |
 | Latency | 2 clock cycles per row |
 | Throughput | 1 matrix-vector multiply per clock cycle (once pipeline is full) |
 | Data width | INT8 weights/inputs, INT32 accumulator |
 | Matrix size | 4×4 |
-| Clock frequency | not yet synthesized — simulation only |
+| Clock frequency | not yet synthesized - simulation only |
  
 ## MNIST inference demo
  
