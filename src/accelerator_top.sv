@@ -2,12 +2,19 @@ module accelerator_top #(
     parameter ROWS = 4,
     parameter COLS = 4,
     parameter DATA_WIDTH = 8, //int8 input width
-    parameter OUT_WIDTH = 32  //int32 accumulation width
+    parameter OUT_WIDTH = 32,  //int32 accumulation width
+    parameter DEPTH = 8
 )(
     input logic clk,
     input logic rst,
+    input logic wclk, //new
+    input  logic [DATA_WIDTH-1:0] wdata,
+    input logic write_en,
+    output logic full,
+
     input logic start,
     output logic done
+
 );
 
     //internal control signals from fsm
@@ -19,9 +26,16 @@ module accelerator_top #(
     logic [$clog2(COLS)-1:0] col_addr;
     logic [$clog2(ROWS)-1:0] row_addr;
 
+    //internal signals for fifo and fsm
+    logic empty;
+    logic [DATA_WIDTH-1:0] rdata;
+    logic read_en;
+    logic vec_wen;
+    logic [$clog2(COLS)-1:0] vec_waddr;
+    logic [DATA_WIDTH-1:0] vec_wdata;
 
 
-    // bram data signals
+    //bram data signals
     logic signed [DATA_WIDTH-1:0] vec_data; // one element of input vector
     logic signed [DATA_WIDTH-1:0] mat_data; //one elemenet of weight matrix
     logic signed [OUT_WIDTH-1:0] result_data; //one output result / dot product
@@ -43,10 +57,10 @@ module accelerator_top #(
     //input vector bram
     bram #(.WIDTH(DATA_WIDTH), .DEPTH(COLS)) vec_bram (
         .clk(clk),
-        .write_en(1'b0), 
-        .addr_w('0),
+        .write_en(vec_wen), 
+        .addr_w(vec_waddr),
         .addr_r(col_addr),
-        .write_data('0),
+        .write_data(vec_wdata),
         .read_data(vec_data)
     );
 
@@ -77,17 +91,37 @@ module accelerator_top #(
     );
 
     logic preload_en;
-    fsm #(.ROWS(ROWS), .COLS(COLS)) fsm_inst (
+    fsm #(.ROWS(ROWS), .COLS(COLS), .DATA_WIDTH(DATA_WIDTH)) fsm_inst (
         .clk(clk),
         .rst(rst),
         .start(start),
+        //.write_en(write_en),
+        .empty(empty),
+        .rdata(rdata),
         .vec_ren(vec_ren),
         .mat_ren(mat_ren),
         .col_addr(col_addr),
         .row_addr(row_addr),
         .valid_out(valid_compute),
         .done(fsm_done),
-        .preload_en(preload_en)
+        .preload_en(preload_en),
+        .read_en(read_en),
+        .vec_wen(vec_wen),
+        .vec_waddr(vec_waddr),
+        .vec_wdata(vec_wdata)
+    );
+
+
+    async_fifo #(.DEPTH(DEPTH), .DATA_WIDTH(DATA_WIDTH)) fifo_inst (
+        .wclk(wclk),
+        .rclk(clk),
+        .rst(rst),
+        .wdata(wdata),
+        .write_en(write_en),
+        .read_en(read_en),
+        .full(full),
+        .rdata(rdata),
+        .empty(empty)
     );
 
     //temp registers 

@@ -1,29 +1,38 @@
 module fsm #(
     parameter ROWS = 4,
-    parameter COLS = 4
+    parameter COLS = 4,
+    parameter DATA_WIDTH = 8
+
 )(
     input logic clk,
     input logic rst,
     input logic start, //goes high to start load
     //output logic write_en, //write enable for output in BRAM
+    input logic empty,  //new empty flag to see if to read or now
+    input logic [DATA_WIDTH-1:0] rdata, // new line that takes in data from fio
     output logic vec_ren, //read enable for vector in BRAM
     output logic mat_ren, //read enable for matrix in BRAM
     output logic [$clog2(COLS)-1:0] col_addr, //current column index
     output logic [$clog2(ROWS)-1:0] row_addr,  // current row index
-    output logic valid_out,     // result is valid
-    output logic done,           // full pass done 
-    output logic preload_en //high during preload state
+    output logic valid_out, //result is valid
+    output logic done, //full pass done 
+    output logic preload_en, //high during preload state
+    output logic read_en, //new signal to take in data from fifo
+    output logic vec_wen,  //vec_bram write enable
+    output logic [$clog2(COLS)-1:0] vec_waddr, //vec_bram write address
+    output logic [DATA_WIDTH-1:0] vec_wdata //vec_bram write data
 
 );
 
     //state encoding
     typedef enum logic [2:0] { 
-        IDLE = 3'd0, //3 bits required for 5 in binary
-        PRELOAD = 3'd1, 
-        LOAD    = 3'd2,
-        COMPUTE = 3'd3,
-        STORE   = 3'd4,
-        DONE    = 3'd5
+        IDLE = 3'd0, //3 bits required for 7 in binary
+        LOAD_VEC = 3'd1,
+        PRELOAD = 3'd2, 
+        LOAD    = 3'd3,
+        COMPUTE = 3'd4,
+        STORE   = 3'd5,
+        DONE    = 3'd6
     } state_type; 
 
     state_type state;
@@ -32,6 +41,8 @@ module fsm #(
     //counters to track where we are in matrix
     logic [$clog2(ROWS)-1:0] row_cnt;
     logic [$clog2(COLS)-1:0] col_cnt;
+
+    logic [$clog2(COLS):0] data_cnt; //counting up to cols bytes for the fifo
 
     always_ff @ (posedge clk) begin
         if (rst)
@@ -44,7 +55,10 @@ module fsm #(
     always_comb begin
         next_state = state;
         case (state)
-            IDLE: if (start) next_state = PRELOAD;
+            IDLE: if (start) next_state = LOAD_VEC;
+            LOAD_VEC: 
+                if (data_cnt == COLS-1 && !empty) next_state = PRELOAD;
+                else next_state = LOAD_VEC;
             PRELOAD: begin
                 if (row_cnt == ROWS-1 && col_cnt == COLS-1) 
                     next_state = LOAD;
@@ -86,8 +100,17 @@ module fsm #(
         if (rst) begin
             row_cnt <= 0;
             col_cnt <= 0;
+            data_cnt <= 0; //basc col_cnt but for the fifo
         end else begin //only need begin and end if item has 2+ actions
             case (state)  
+                LOAD_VEC: begin
+                    if (!empty) begin
+                        if (data_cnt == COLS-1)
+                            data_cnt <= 0;
+                        else
+                            data_cnt <= data_cnt + 1;
+                    end
+                end
                 PRELOAD: begin
                     if (col_cnt == COLS-1) begin
                         col_cnt <= 0;
@@ -130,8 +153,22 @@ module fsm #(
         col_addr = col_cnt;
         row_addr = row_cnt;
 
+        //new for uart fifo
+        read_en = 0;
+        vec_wen = 0;
+        vec_waddr = 0;
+        vec_wdata = 0;
+
         case (state)
             IDLE:; //all outputs already 0 
+            LOAD_VEC: begin
+                if (!empty) begin
+                    read_en  = 1; //can read
+                    vec_wen    = 1; //can write vector to bram
+                    vec_waddr = data_cnt[$clog2(COLS)-1:0]; //the addy to write to
+                    vec_wdata = rdata; //the data its writing
+                end
+            end
             PRELOAD: begin
                 mat_ren = 1;  // read matrix only, not vector yet
                 preload_en = 1;
